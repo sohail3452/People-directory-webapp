@@ -53,7 +53,7 @@ Demo link (if hosted):
 ## 📁 Installation (Developer)
 
 ```bash
-
+git clone https://github.com/sohail3452/People-directory-webapp.git
 cd People-directory-webapp
 pip install -r requirements.txt
 python app.py
