@@ -1,0 +1,136 @@
+<form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+  <div class="mb-3">
+    <label for="full_name" class="form-label">Full Name *</label>
+    <input type="text" class="form-control" id="full_name" name="full_name" 
+           value="{{ person.full_name }}" required>
+    <div class="invalid-feedback">Please provide a full name.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="date_of_birth" class="form-label">Date of Birth *</label>
+    <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" 
+           value="{{ person.date_of_birth }}" required>
+    <div class="invalid-feedback">Please select a valid date of birth.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="race" class="form-label">Race</label>
+    <input type="text" class="form-control" id="race" name="race" 
+           value="{{ person.race or '' }}">
+  </div>
+
+  <div class="mb-3">
+    <label for="phone" class="form-label">Phone</label>
+    <input type="tel" class="form-control" id="phone" name="phone" 
+           value="{{ person.phone or '' }}" pattern="[\d\s\-()+]{10,}">
+    <div class="form-text">Format: 123-456-7890</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" name="email" 
+           value="{{ person.email or '' }}">
+    <div class="invalid-feedback">Please provide a valid email.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="school" class="form-label">School</label>
+    <input type="text" class="form-control" id="school" name="school" 
+           value="{{ person.school or '' }}">
+  </div>
+
+  <div class="mb-3">
+    <label for="city" class="form-label">City</label>
+    <input type="text" class="form-control" id="city" name="city" 
+           value="{{ person.city or '' }}">
+  </div>
+
+  <div class="mb-3">
+    <label for="tags" class="form-label">Tags (comma separated)</label>
+    <input type="text" class="form-control" id="tags" name="tags" 
+           value="{{ person.tags or '' }}">
+    <div class="form-text">Example: student, athlete, artist</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="images" class="form-label">Upload Additional Images</label>
+    <input type="file" class="form-control" id="images" name="images" 
+           multiple accept="image/*">
+    <div class="form-text">Max file size: 5MB. Accepted formats: JPG, PNG, GIF</div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<!-- Existing Images Gallery -->
+<div class="mt-4">
+  <h3 class="h5 mb-3">Existing Images</h3>
+  {% if person.images %}
+    <div class="d-flex flex-wrap gap-3">
+      {% for img in person.images %}
+        <div class="position-relative" style="width: 150px;">
+          <img src="{{ url_for('static', filename='uploads/' + img.filename) }}" 
+               class="img-thumbnail" alt="Profile image {{ loop.index }}"
+               style="width: 100%; height: auto;">
+          <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                  data-bs-toggle="modal" data-bs-target="#deleteImageModal"
+                  data-image-id="{{ img.id }}">
+            &times;
+          </button>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No images uploaded yet.</div>
+  {% endif %}
+</div>
+
+<!-- Delete Image Modal -->
+<div class="modal fade" id="deleteImageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this image?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form id="deleteImageForm" method="POST" action="{{ url_for('delete_image') }}">
+          <input type="hidden" name="image_id" id="modalImageId">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Form validation
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+  
+  // Image deletion modal handler
+  const deleteModal = document.getElementById('deleteImageModal')
+  if (deleteModal) {
+    deleteModal.addEventListener('show.bs.modal', event => {
+      const button = event.relatedTarget
+      const imageId = button.getAttribute('data-image-id')
+      document.getElementById('modalImageId').value = imageId
+    })
+  }
+})()
+</script>

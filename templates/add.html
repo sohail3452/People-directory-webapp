@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Form to add a new person to the system">
+  <title>Add New Person</title>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --text-color: #374151;
+      --light-text: #6b7280;
+      --border-color: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --radius: 0.5rem;
+      --error-color: #dc2626;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      background: #f9fafb;
+      color: var(--text-color);
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+    
+    form {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    
+    .required-field::after {
+      content: " *";
+      color: var(--error-color);
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="file"],
+    input[type="url"] {
+      width: 100%;
+      padding: 0.625rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    input[type="file"] {
+      padding: 0.5rem;
+      background: #f3f4f6;
+    }
+    
+    .hint {
+      font-size: 0.875rem;
+      color: var(--light-text);
+      margin-top: 0.25rem;
+    }
+    
+    button[type="submit"] {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary-color);
+      border: none;
+      border-radius: var(--radius);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
+    
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background: var(--primary-hover);
+    }
+    
+    .flash-messages {
+      margin-bottom: 1.5rem;
+    }
+    
+    .flash-message {
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+      background: #fee2e2;
+      color: var(--error-color);
+      border-radius: var(--radius);
+      font-weight: 600;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 1.5rem;
+      color: var(--light-text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .back-link:hover,
+    .back-link:focus {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    
+    .back-link svg {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+    
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+      
+      form {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Add New Person</h1>
+    
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for msg in messages %}
+            <div class="flash-message" role="alert">
+              {{ msg }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    
+    <form method="POST" enctype="multipart/form-data" novalidate>
+      <div class="form-group">
+        <label for="full_name" class="required-field">Full Name</label>
+        <input type="text" id="full_name" name="full_name" required aria-required="true">
+      </div>
+      
+      <div class="form-group">
+        <label for="date_of_birth" class="required-field">Date of Birth</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" required aria-required="true">
+      </div>
+      
+      <div class="form-group">
+        <label for="race">Race</label>
+        <input type="text" id="race" name="race">
+      </div>
+      
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" inputmode="tel" pattern="[0-9\-\(\)\s]+">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" inputmode="email">
+      </div>
+      
+      <div class="form-group">
+        <label for="job">Job</label>
+        <input type="text" id="job" name="job">
+      </div>
+      
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country">
+      </div>
+      
+      <div class="form-group">
+        <label for="profile">Profile URL</label>
+        <input type="url" id="profile" name="profile" inputmode="url">
+        <div class="hint">Link to personal website or profile</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="social_media">Social Media</label>
+        <input type="url" id="social_media" name="social_media" inputmode="url">
+        <div class="hint">Link to social media profile</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" name="city">
+      </div>
+      
+      <div class="form-group">
+        <label for="tags">Tags (comma separated)</label>
+        <input type="text" id="tags" name="tags" aria-describedby="tags-hint">
+        <div id="tags-hint" class="hint">Separate multiple tags with commas</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="images" class="required-field">Upload Images</label>
+        <input type="file" id="images" name="images" multiple required aria-required="true" accept="image/*" aria-describedby="file-hint">
+        <div id="file-hint" class="hint">You can select multiple image files (JPEG, PNG)</div>
+      </div>
+      
+      <button type="submit">Add Person</button>
+    </form>
+    
+    <a href="{{ url_for('index') }}" class="back-link">
+      <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Home
+    </a>
+  </div>
+</body>
+</html>

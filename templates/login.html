@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login</title>
+  <style>
+    /* Reset some default styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f8;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 1rem;
+    }
+
+    .login-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 360px;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+      color: #333;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #007BFF;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover,
+    button:focus {
+      background: #0056b3;
+      outline: none;
+    }
+
+    .flash-message {
+      color: #d93025; /* Google red for errors */
+      margin-bottom: 1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    @media (max-width: 400px) {
+      .login-container {
+        padding: 1.5rem;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-container" role="main" aria-labelledby="loginHeading">
+    <h1 id="loginHeading">Admin Login</h1>
+    <form method="POST" novalidate>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required autofocus autocomplete="username" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password" />
+
+      <button type="submit" aria-label="Login to admin panel">Login</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-message" role="alert" aria-live="assertive">
+          {% for msg in messages %}
+            <div>{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search People</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 600px;
+      background: #f9f9f9;
+      color: #333;
+      padding: 1rem;
+    }
+    h1, h2 {
+      color: #222;
+    }
+    form {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    input[type="text"] {
+      flex-grow: 1;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #007BFF;
+      box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    }
+    button {
+      padding: 0.5rem 1.25rem;
+      font-size: 1rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover,
+    button:focus {
+      background-color: #0056b3;
+      outline: none;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+    p.no-results {
+      font-style: italic;
+      color: #666;
+    }
+    a.back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      color: #555;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    a.back-link:hover,
+    a.back-link:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <main role="main" aria-labelledby="searchHeading">
+    <h1 id="searchHeading">Search People</h1>
+
+    <form method="get" action="{{ url_for('search') }}" role="search" aria-label="Search people form">
+      <label for="searchInput" class="visually-hidden">Search by name, race, tags</label>
+      <input
+        type="text"
+        id="searchInput"
+        name="q"
+        placeholder="Search by name, race, tags..."
+        value="{{ query | e }}"
+        aria-describedby="searchDesc"
+      />
+      <button type="submit">Search</button>
+    </form>
+
+    <span id="searchDesc" class="visually-hidden">
+      Enter keywords like name, race, or tags and press Search
+    </span>
+
+    {% if query %}
+      <h2>Results for "{{ query | e }}":</h2>
+
+      {% if people %}
+        <ul>
+          {% for person in people %}
+            <li><a href="{{ url_for('view', person_id=person.id) }}">{{ person.full_name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="no-results">No results found.</p>
+      {% endif %}
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="back-link" aria-label="Back to Home">← Back to Home</a>
+  </main>
+
+  <style>
+    /* Visually hidden helper class for accessibility */
+    .visually-hidden {
+      position: absolute !important;
+      height: 1px; width: 1px;
+      overflow: hidden;
+      clip: rect(1px, 1px, 1px, 1px);
+      white-space: nowrap;
+    }
+  </style>
+</body>
+</html>
